@@ -1,0 +1,6 @@
+{
+  "name": "investmymillion-api",
+  "version": "1.0.0",
+  "main": "longterm.js",
+  "type": "module"
+}
