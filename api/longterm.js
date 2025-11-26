@@ -7,7 +7,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Root route – basic status check
+// Root route – Status check
 app.get("/", (req, res) => {
   res.json({
     ok: true,
@@ -15,15 +15,26 @@ app.get("/", (req, res) => {
   });
 });
 
-// Example long-term model endpoint
+// Long-term investment model endpoint
 app.post("/longterm", (req, res) => {
   const { amount, risk, duration } = req.body || {};
 
-  // Very simple placeholder logic – you can upgrade this later
-  const baseGrowthRate =
-    risk === "high" ? 0.15 : risk === "low" ? 0.05 : 0.1; // 5%–15% yearly
-  const years = duration ? duration / 12 : 1;
+  if (!amount || !risk || !duration) {
+    return res.json({
+      ok: false,
+      error: "Missing values. Please provide amount, risk, and duration.",
+    });
+  }
 
+  // Basic growth logic
+  const baseGrowthRate =
+    risk === "high"
+      ? 0.15
+      : risk === "low"
+      ? 0.05
+      : 0.1; // Medium risk = 10%
+
+  const years = duration / 12;
   const projectedValue = Math.round(amount * Math.pow(1 + baseGrowthRate, years));
 
   res.json({
@@ -31,11 +42,11 @@ app.post("/longterm", (req, res) => {
     input: { amount, risk, duration },
     projectedValue,
     note:
-      "This is a simple demo projection. Real InvestMyMillion models will be more advanced.",
+      "This is a basic demo model. Real InvestMyMillion models will be more advanced.",
   });
 });
 
-// Port for local / hosting platform
+// Port (Render provides PORT automatically)
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
