@@ -50,5 +50,5 @@ app.post("/longterm", (req, res) => {
 const PORT = process.env.PORT || 3000;
 
 app.listen(PORT, () => {
-  console.log(InvestMyMillion API running on port ${PORT});
+  console.log("InvestMyMillion API running on port " + PORT);
 });
